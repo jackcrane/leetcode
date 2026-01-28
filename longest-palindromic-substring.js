@@ -7,7 +7,9 @@ var longestPalindrome = function (s) {
 
   let longest = "";
   for (let ctrIdx = 0; ctrIdx < s.length - 1; ctrIdx++) {
-    let center = s[ctrIdx];
+    const maxOdd = 2 * Math.min(ctrIdx, s.length - ctrIdx - 1) + 1;
+    if (maxOdd <= longest.length) continue;
+
     let firstChar = ctrIdx;
     let secondChar = ctrIdx;
 
@@ -18,11 +20,15 @@ var longestPalindrome = function (s) {
     ) {
       firstChar--;
       secondChar++;
-      center = s[firstChar] + center + s[secondChar];
     }
-    if (center.length > longest.length) longest = center;
+    if (secondChar - firstChar + 1 > longest.length) {
+      longest = s.slice(firstChar, secondChar + 1);
+    }
 
+    // EVEN BRANCH
     if (s[ctrIdx] == s[ctrIdx + 1]) {
+      const maxEven = 2 * Math.min(ctrIdx + 1, s.length - ctrIdx - 1);
+      if (maxEven <= longest.length) continue;
       center = s[ctrIdx] + s[ctrIdx + 1];
       firstChar = ctrIdx;
       secondChar = ctrIdx + 1;
@@ -33,11 +39,11 @@ var longestPalindrome = function (s) {
       ) {
         firstChar--;
         secondChar++;
-        center = s[firstChar] + center + s[secondChar];
+      }
+      if (secondChar - firstChar + 1 > longest.length) {
+        longest = s.slice(firstChar, secondChar + 1);
       }
     }
-
-    if (center.length > longest.length) longest = center;
   }
   return longest;
 };
