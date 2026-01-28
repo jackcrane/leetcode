@@ -13,8 +13,7 @@ var maxArea = function (heights) {
       let height2 = heights[h2idx];
 
       let width = h2idx - h1idx;
-      // let height = Math.abs(height1 - height2);
-      let height = height1 > height2 ? height2 : height1;
+      let height = Math.min(height1, height2);
 
       let area = width * height;
       if (area > max) {
