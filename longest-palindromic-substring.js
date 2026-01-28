@@ -6,26 +6,40 @@ var longestPalindrome = function (s) {
   if (s.length == 1) return s;
 
   let longest = "";
-  for (let firstLetter = 0; firstLetter < s.length - 1; firstLetter++) {
-    for (
-      let lastLetter = firstLetter + 1;
-      lastLetter <= s.length;
-      lastLetter++
+  for (let ctrIdx = 0; ctrIdx < s.length - 1; ctrIdx++) {
+    let center = s[ctrIdx];
+    let firstChar = ctrIdx;
+    let secondChar = ctrIdx;
+
+    while (
+      firstChar > 0 &&
+      secondChar < s.length &&
+      s[firstChar - 1] === s[secondChar + 1]
     ) {
-      if (s.length - firstLetter <= longest.length) break;
-      let substring = s.substring(firstLetter, lastLetter);
-      let firstHalf = substring.slice(0, Math.floor(substring.length / 2));
-      let secondHalf = substring.slice(Math.ceil(substring.length / 2));
+      firstChar--;
+      secondChar++;
+      center = s[firstChar] + center + s[secondChar];
+    }
+    if (center.length > longest.length) longest = center;
 
-      let reversedSecondHalf = "";
-      for (let i = secondHalf.length - 1; i >= 0; i--) {
-        reversedSecondHalf = reversedSecondHalf + secondHalf[i];
-      }
-
-      if (firstHalf === reversedSecondHalf) {
-        if (substring.length > longest.length) longest = substring;
+    if (s[ctrIdx] == s[ctrIdx + 1]) {
+      center = s[ctrIdx] + s[ctrIdx + 1];
+      firstChar = ctrIdx;
+      secondChar = ctrIdx + 1;
+      while (
+        firstChar > 0 &&
+        secondChar < s.length &&
+        s[firstChar - 1] === s[secondChar + 1]
+      ) {
+        firstChar--;
+        secondChar++;
+        center = s[firstChar] + center + s[secondChar];
       }
     }
+
+    if (center.length > longest.length) longest = center;
   }
   return longest;
 };
+
+// console.log(longestPalindrome("abbcccba"));
